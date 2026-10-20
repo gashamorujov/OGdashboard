@@ -1,0 +1,95 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "websites": {
+      ".read": true,
+      "$id": {
+        ".write": "auth != null && auth.token.email === 'admin@sites-dashboard.app'",
+        ".validate": "newData.hasChildren(['id','name','url','createdAt']) && newData.child('id').val() === $id",
+        "id": {
+          ".validate": "newData.isString()"
+        },
+        "name": {
+          ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 80"
+        },
+        "url": {
+          ".validate": "newData.isString() && newData.val().length <= 2048 && newData.val().matches(/^https?:\\/\\/[^\\s]+$/i)"
+        },
+        "logoUrl": {
+          ".validate": "newData.isString() && newData.val().length <= 2048 && newData.val().matches(/^https?:\\/\\/[^\\s]+$/i)"
+        },
+        "logoPublicId": {
+          ".validate": "newData.isString() && newData.val().length <= 300"
+        },
+        "logoCrop": {
+          ".validate": "newData.hasChildren(['x','y','zoom'])",
+          "x": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100"
+          },
+          "y": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100"
+          },
+          "zoom": {
+            ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 3"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "order": {
+          ".validate": "newData.isNumber()"
+        },
+        "createdAt": {
+          ".validate": "newData.isNumber()"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "playlists": {
+      ".read": true,
+      "$n": {
+        ".validate": "$n === '1' || $n === '2' || $n === '3'",
+        "tracks": {
+          "$id": {
+            ".write": "auth != null && auth.token.email === 'admin@sites-dashboard.app'",
+            ".validate": "newData.hasChildren(['id','playlist','title','url','order','createdAt']) && newData.child('id').val() === $id && (newData.child('playlist').val() + '') === $n",
+            "id": {
+              ".validate": "newData.isString()"
+            },
+            "playlist": {
+              ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 3"
+            },
+            "title": {
+              ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 120"
+            },
+            "url": {
+              ".validate": "newData.isString() && newData.val().length <= 2048 && newData.val().matches(/^https?:\\/\\/[^\\s]+$/i)"
+            },
+            "publicId": {
+              ".validate": "newData.isString() && newData.val().length <= 300"
+            },
+            "duration": {
+              ".validate": "newData.isNumber() && newData.val() >= 0"
+            },
+            "order": {
+              ".validate": "newData.isNumber()"
+            },
+            "createdAt": {
+              ".validate": "newData.isNumber()"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        }
+      }
+    },
+    "settings": {
+      ".read": true,
+      ".write": "auth != null && auth.token.email === 'admin@sites-dashboard.app'"
+    }
+  }
+}
